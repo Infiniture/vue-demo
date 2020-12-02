@@ -1,6 +1,7 @@
 <template>
   <div>
     <!-- <a-input v-model="inputValue"/> -->
+    <!-- <a-input :value="stateValue" @input="handleStateValueChange" /> -->
     <a-input @input="handleInput" />
     <p>{{ inputValue }} -> lastLetter is {{ inputValueLastLetter }}</p>
     <a-show :content="inputValue" />
@@ -31,7 +32,8 @@ export default {
       // 'appName'
       appName: state => state.appName,
       userName: state => state.user.userName,
-      appVersion: state => state.appVersion
+      appVersion: state => state.appVersion,
+      // stateValue: state => state.stateValue
     }),
     ...mapGetters('user', [
       'firstLetter'
@@ -56,7 +58,8 @@ export default {
     // ...是展开操作符
     ...mapMutations('user', [
       'SET_APP_NAME',
-      'SET_USER_NAME'
+      'SET_USER_NAME',
+      'SET_STATE_VALUE'
     ]),
     ...mapActions([
       'updateAppName'
@@ -73,6 +76,9 @@ export default {
     },
     changeUserName() {
       this.SET_USER_NAME('vue-course')
+    },
+    handleStateValueChange(val) {
+      this.SET_STATE_VALUE(val)
     }
   }
 }
