@@ -6,12 +6,15 @@
     <a-show :content="inputValue" />
     <p>appName: {{ appName }}, appNameWithVersion: {{appNameWithVersion}}</p>
     <p>userName: {{ userName }}, firstLetter is: {{firstLetter}}</p>
+    <button @click="handleChangeAppName">修改appName</button>
+    <p>{{ appVersion }}</p>
+    <button @click="changeUserName">修改用户名</button>
   </div>
 </template>
 <script>
 import AInput from '../components/AInput.vue'
 import AShow from '../components/AShow.vue'
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'store',
   data () {
@@ -27,7 +30,8 @@ export default {
     ...mapState({
       // 'appName'
       appName: state => state.appName,
-      userName: state => state.user.userName
+      userName: state => state.user.userName,
+      appVersion: state => state.appVersion
     }),
     ...mapGetters('user', [
       'firstLetter'
@@ -49,8 +53,26 @@ export default {
     }
   },
   methods: {
+    // ...是展开操作符
+    ...mapMutations('user', [
+      'SET_APP_NAME',
+      'SET_USER_NAME'
+    ]),
+    ...mapActions([
+      'updateAppName'
+    ]),
     handleInput (val) {
       this.inputValue = val
+    },
+    handleChangeAppName() {
+      // this.$store.commit('SET_APP_NAME', 'newAppName')
+      // this.SET_APP_NAME('newAppName')
+      this.updateAppName()
+
+      // this.$store.commit('SET_APP_VERSION')
+    },
+    changeUserName() {
+      this.SET_USER_NAME('vue-course')
     }
   }
 }
